@@ -1,0 +1,43 @@
+name: AI技術ニュース通知
+
+on:
+  schedule:
+    # 毎朝8時（JST）に実行（UTC 23:00）
+    - cron: '0 23 * * *'
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  send-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: リポジトリをチェックアウト
+      uses: actions/checkout@v4
+      
+    - name: Python環境をセットアップ
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: 依存パッケージをインストール
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: 記事収集・通知実行
+      env:
+        LINE_NOTIFY_TOKEN: ${{ secrets.LINE_NOTIFY_TOKEN }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m src.main
+    
+    - name: 履歴ファイルの変更をコミット
+      if: always()
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/notified_articles.json
+        git diff --staged --quiet || git commit -m "Update notification history [skip ci]"
+        git push
+

@@ -39,8 +39,8 @@ cd ai-news-bot
 4. チャネル情報を入力して作成
 5. **チャネル情報を確認**：
    - チャネル設定ページの「基本設定」タブで確認：
-     - **チャネルID**: `LINE_CHANNEL_ID`として使用（例: `2008843686`）
-     - **チャネルシークレット**: `LINE_CHANNEL_SECRET`として使用（例: `5ba594d83126ce8c3b966f64b22eb477`）
+     - **チャネルID**: `LINE_CHANNEL_ID`として使用（数値）
+     - **チャネルシークレット**: `LINE_CHANNEL_SECRET`として使用（英数字の文字列）
 6. **チャネルアクセストークン**を発行：
    - チャネル設定ページの「Messaging API設定」タブを開く
    - 「チャネルアクセストークン（長期）」セクションで「発行」をクリック
@@ -88,11 +88,11 @@ cd ai-news-bot
 2. 「New repository secret」をクリック
 3. 以下のシークレットを追加：
 
-   - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging APIのチャネルアクセストークン（必須・取得済み）
-   - `LINE_CHANNEL_ID`: LINE Messaging APIのチャネルID（必須・`2008843686`）
-   - `LINE_CHANNEL_SECRET`: LINE Messaging APIのチャネルシークレット（必須・`5ba594d83126ce8c3b966f64b22eb477`）
-   - `LINE_USER_ID`: 通知を送信するユーザーID（必須・`Ub8ba7bebd1111d25cb340badafbcb4e8`）
-   - `GEMINI_API_KEY`: Gemini Pro APIキー（必須・`AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`）
+   - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging APIのチャネルアクセストークン（必須・Messaging API設定で発行）
+   - `LINE_CHANNEL_ID`: LINE Messaging APIのチャネルID（必須・基本設定タブで確認）
+   - `LINE_CHANNEL_SECRET`: LINE Messaging APIのチャネルシークレット（必須・基本設定タブで確認）
+   - `LINE_USER_ID`: 通知を送信するユーザーID（必須・Webhookイベントから取得、`U`で始まる文字列）
+   - `GEMINI_API_KEY`: Gemini Pro APIキー（必須・Google AI Studioで発行、`AIza...`で始まる文字列）
    - `OPENAI_API_KEY`: OpenAI APIキー（オプション、フォールバック用）
 
 ### 4. 初回設定の確認
@@ -120,12 +120,13 @@ GitHub Actionsが毎朝8時（JST）に自動的に実行されます。
 
 ```bash
 # 環境変数を設定（Windows PowerShell）
-$env:LINE_CHANNEL_ACCESS_TOKEN="your_channel_access_token"
-$env:LINE_CHANNEL_ID="2008843686"
-$env:LINE_CHANNEL_SECRET="5ba594d83126ce8c3b966f64b22eb477"
-$env:LINE_USER_ID="your_user_id"
-$env:GEMINI_API_KEY="your_api_key"
-$env:OPENAI_API_KEY="your_openai_key"  # オプション
+# ⚠️ 実際の値を設定してください（例示の値ではありません）
+$env:LINE_CHANNEL_ACCESS_TOKEN="your_channel_access_token_here"
+$env:LINE_CHANNEL_ID="your_channel_id_here"
+$env:LINE_CHANNEL_SECRET="your_channel_secret_here"
+$env:LINE_USER_ID="your_user_id_here"
+$env:GEMINI_API_KEY="your_gemini_api_key_here"
+$env:OPENAI_API_KEY="your_openai_key_here"  # オプション
 
 # Pythonスクリプトを実行
 python -m src.main

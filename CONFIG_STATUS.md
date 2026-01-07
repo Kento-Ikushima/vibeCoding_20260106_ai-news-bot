@@ -2,44 +2,50 @@
 
 このファイルには、現在の設定状況をまとめています。
 
-## ✅ 設定済みの情報
+⚠️ **重要**: 機密情報（APIキー、トークン、シークレット）はGitHub Secretsにのみ設定してください。このファイルやコードに直接書き込まないでください。
+
+## ✅ 設定が必要な情報
 
 ### LINE Messaging API
-- **Channel ID**: `2008843686`
-- **Channel Secret**: `5ba594d83126ce8c3b966f64b22eb477`
-- **User ID**: `Ub8ba7bebd1111d25cb340badafbcb4e8`
-- **Channel Access Token**: `HtHPbSSrL5JR08BEgw7OQo+iUTtdRFi/LwYIVAEPYofvkh8r4EX7vFULOKyQg9vSOpOZdXmOQDWGdz1ZxZs0Ouhu6ZkyKqHLOy5HgrThBB7KT7/H9RgCfGYFlNkVVB3CTmbF3/Dg1gP9Mmpc50LKgQdB04t89/1O/w1cDnyilFU=`
+以下の情報をLINE Developers Consoleで取得してください：
+- **Channel ID**: チャネルの基本設定タブで確認
+- **Channel Secret**: チャネルの基本設定タブで確認
+- **User ID**: Webhookイベントから取得（`U`で始まる文字列）
+- **Channel Access Token**: Messaging API設定で発行
 
 ### Gemini Pro API
-- **API Key**: `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
-  - ⚠️ GitHub Secretsに設定が必要
+- **API Key**: Google AI Studioで発行（`AIza...`で始まる文字列）
 
 ## 📝 GitHub Secretsで設定が必要な項目
 
 以下のシークレットをGitHubリポジトリに設定してください：
 
-| シークレット名 | 値 | 状態 |
+| シークレット名 | 説明 | 状態 |
 |---|---|---|
-| `LINE_CHANNEL_ACCESS_TOKEN` | `HtHPbSSrL5JR08BEgw7OQo+iUTtdRFi/LwYIVAEPYofvkh8r4EX7vFULOKyQg9vSOpOZdXmOQDWGdz1ZxZs0Ouhu6ZkyKqHLOy5HgrThBB7KT7/H9RgCfGYFlNkVVB3CTmbF3/Dg1gP9Mmpc50LKgQdB04t89/1O/w1cDnyilFU=` | ✅ 値が確定済み |
-| `LINE_CHANNEL_ID` | `2008843686` | ✅ 値が確定済み |
-| `LINE_CHANNEL_SECRET` | `5ba594d83126ce8c3b966f64b22eb477` | ✅ 値が確定済み |
-| `LINE_USER_ID` | `Ub8ba7bebd1111d25cb340badafbcb4e8` | ✅ 値が確定済み |
-| `GEMINI_API_KEY` | `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY` | ✅ 値が確定済み |
-| `OPENAI_API_KEY` | （オプション） | ⚪ 任意 |
+| `LINE_CHANNEL_ACCESS_TOKEN` | Messaging API設定で発行したトークン | ⚠️ GitHub Secretsに設定 |
+| `LINE_CHANNEL_ID` | 基本設定タブで確認したChannel ID | ⚠️ GitHub Secretsに設定 |
+| `LINE_CHANNEL_SECRET` | 基本設定タブで確認したChannel Secret | ⚠️ GitHub Secretsに設定 |
+| `LINE_USER_ID` | Webhookイベントから取得したユーザーID | ⚠️ GitHub Secretsに設定 |
+| `GEMINI_API_KEY` | Google AI Studioで発行したAPIキー | ⚠️ GitHub Secretsに設定 |
+| `OPENAI_API_KEY` | （オプション）フォールバック用 | ⚪ 任意 |
 
 ## 🚀 次のステップ
 
-1. **GitHub Secretsに設定** ⚠️ **重要：これが必要です**
-   - リポジトリの「Settings」→「Secrets and variables」→「Actions」
-   - 以下の6つのシークレットをすべて追加：
-     - `LINE_CHANNEL_ACCESS_TOKEN`: `HtHPbSSrL5JR08BEgw7OQo+iUTtdRFi/LwYIVAEPYofvkh8r4EX7vFULOKyQg9vSOpOZdXmOQDWGdz1ZxZs0Ouhu6ZkyKqHLOy5HgrThBB7KT7/H9RgCfGYFlNkVVB3CTmbF3/Dg1gP9Mmpc50LKgQdB04t89/1O/w1cDnyilFU=`
-     - `LINE_CHANNEL_ID`: `2008843686`
-     - `LINE_CHANNEL_SECRET`: `5ba594d83126ce8c3b966f64b22eb477`
-     - `LINE_USER_ID`: `Ub8ba7bebd1111d25cb340badafbcb4e8`
-     - `GEMINI_API_KEY`: `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
-     - `OPENAI_API_KEY`: （オプション）
+1. **LINE Developers Consoleで各種情報を取得**
+   - [LINE Developers Console](https://developers.line.biz/console/)にアクセス
+   - チャネルを選択
+   - 基本設定タブでChannel IDとChannel Secretを確認
+   - Messaging API設定でチャネルアクセストークンを発行
+   - WebhookイベントからユーザーIDを取得
 
-2. **動作確認**
+2. **Gemini APIキーを取得**
+   - [Google AI Studio](https://makersuite.google.com/app/apikey)で発行
+
+3. **GitHub Secretsに設定**
+   - リポジトリの「Settings」→「Secrets and variables」→「Actions」
+   - 上記の6つのシークレットをすべて追加
+
+4. **動作確認**
    - GitHub Actionsで手動実行
    - LINEで通知が届くことを確認
 
@@ -47,5 +53,9 @@
 
 ---
 
-**最終更新**: 2025年1月5日
+**⚠️ セキュリティ注意事項**:
+- 機密情報はGitHub Secretsにのみ保存してください
+- コードやドキュメントに機密情報を直接書き込まないでください
+- もし機密情報を誤ってコミットした場合は、すぐに再発行してください
 
+**最終更新**: 2025年1月5日

@@ -4,11 +4,12 @@
 
 ## 📋 事前準備チェックリスト
 
-- [ ] GitHubリポジトリがプッシュ済み
-- [ ] LINE Messaging APIのチャネルを作成済み
-- [ ] Channel ID: `2008843686`
-- [ ] Channel Secret: `5ba594d83126ce8c3b966f64b22eb477`
-- [ ] Gemini Pro APIキーを取得済み（または取得方法を知っている）
+- [x] GitHubリポジトリがプッシュ済み
+- [x] LINE Messaging APIのチャネルを作成済み
+- [x] Channel ID: `2008843686`
+- [x] Channel Secret: `5ba594d83126ce8c3b966f64b22eb477`
+- [x] Gemini Pro APIキーを取得済み: `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
+- [x] ユーザーIDを取得済み: `Ub8ba7bebd1111d25cb340badafbcb4e8`
 
 ---
 
@@ -96,11 +97,13 @@ GitHub Secretsに、取得した各種トークンやキーを設定します。
 #### ④ LINE_USER_ID
 - **Name**: `LINE_USER_ID`
 - **Secret**: ステップ1-2で取得したユーザーID（`U`で始まる文字列）
+  - **取得済みの場合の例**: `Ub8ba7bebd1111d25cb340badafbcb4e8`
 - 「**Add secret**」をクリック
 
 #### ⑤ GEMINI_API_KEY
 - **Name**: `GEMINI_API_KEY`
 - **Secret**: ステップ2で取得したGemini Pro APIキー
+  - **取得済みの場合の例**: `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
 - 「**Add secret**」をクリック
 
 #### ⑥ OPENAI_API_KEY（オプション）
@@ -112,12 +115,18 @@ GitHub Secretsに、取得した各種トークンやキーを設定します。
 
 すべてのシークレットを追加したら、「Secrets」セクションに以下の6つ（または5つ、OPENAI_API_KEYなしの場合）が表示されていることを確認します：
 
-- ✅ LINE_CHANNEL_ACCESS_TOKEN
-- ✅ LINE_CHANNEL_ID
-- ✅ LINE_CHANNEL_SECRET
-- ✅ LINE_USER_ID
-- ✅ GEMINI_API_KEY
+- ✅ LINE_CHANNEL_ACCESS_TOKEN（チャネルアクセストークンを設定）
+- ✅ LINE_CHANNEL_ID: `2008843686`
+- ✅ LINE_CHANNEL_SECRET: `5ba594d83126ce8c3b966f64b22eb477`
+- ✅ LINE_USER_ID: `Ub8ba7bebd1111d25cb340badafbcb4e8`
+- ✅ GEMINI_API_KEY: `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
 - ✅ OPENAI_API_KEY（オプション）
+
+**現在の設定状況**:
+- Channel IDとChannel Secret: ✅ 設定済み
+- ユーザーID: ✅ 取得済み (`Ub8ba7bebd1111d25cb340badafbcb4e8`)
+- Gemini APIキー: ✅ 取得済み (`AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`)
+- 残り必要なもの: **LINE_CHANNEL_ACCESS_TOKEN**のみ（LINE Developers Consoleで発行が必要）
 
 ---
 

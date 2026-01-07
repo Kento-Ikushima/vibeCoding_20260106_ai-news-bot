@@ -22,17 +22,23 @@ class Summarizer:
     def fetch_article_content(self, url: str) -> Optional[str]:
         """記事の本文を取得"""
         try:
+            print(f"記事本文を取得中: {url}")
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
-            response = requests.get(url, headers=headers, timeout=10)
+            response = requests.get(url, headers=headers, timeout=15)
             response.raise_for_status()
+            response.encoding = response.apparent_encoding  # エンコーディングを自動判定
             
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(response.text, 'html.parser')
             
+            # 不要な要素を削除
+            for script in soup(["script", "style", "nav", "header", "footer", "aside", "advertisement"]):
+                script.decompose()
+            
             # 本文を取得（一般的なタグを試す）
-            content_tags = ['article', 'main', '.article-body', '.content', 'p']
+            content_tags = ['article', 'main', '.article-body', '.content', '.post-content', '.entry-content', 'p']
             content = ""
             
             for tag in content_tags:
@@ -46,10 +52,10 @@ class Summarizer:
                         text = elem.get_text(strip=True)
                         if len(text) > 100:  # 十分な長さのテキストのみ
                             content += text + "\n"
-                    if content:
+                    if len(content) > 500:  # 十分なコンテンツが取得できたら終了
                         break
             
-            if not content:
+            if not content or len(content) < 200:
                 # フォールバック：すべてのpタグから取得
                 paragraphs = soup.find_all('p')
                 content = "\n".join([p.get_text(strip=True) for p in paragraphs if len(p.get_text(strip=True)) > 50])
@@ -58,9 +64,17 @@ class Summarizer:
             if len(content) > 4000:
                 content = content[:4000]
             
+            if not content or len(content) < 100:
+                print(f"WARNING: 記事本文が短すぎます (長さ: {len(content)}文字)")
+                return None
+            
+            print(f"記事本文を取得成功 (長さ: {len(content)}文字)")
             return content
+            
         except Exception as e:
-            print(f"記事本文の取得エラー: {e}")
+            print(f"ERROR: 記事本文の取得エラー: {e}")
+            import traceback
+            traceback.print_exc()
             return None
     
     def summarize_with_gemini(self, title: str, content: str) -> Optional[str]:
@@ -145,17 +159,30 @@ class Summarizer:
         title = article.get("title", "")
         url = article.get("url", "")
         
+        print(f"要約生成を開始: {title}")
+        
         # 記事本文を取得
         content = self.fetch_article_content(url)
         if not content:
+            print("ERROR: 記事本文の取得に失敗したため、要約を生成できません")
             return None
         
         # Gemini Pro APIで要約を試行
-        summary = self.summarize_with_gemini(title, content)
+        if self.gemini_api_key:
+            print("Gemini Pro APIで要約を試行...")
+            summary = self.summarize_with_gemini(title, content)
+            if summary:
+                return summary
+            print("Gemini APIでの要約に失敗。OpenAI APIを試行...")
+        else:
+            print("WARNING: GEMINI_API_KEYが設定されていません。OpenAI APIを試行...")
         
         # Geminiが失敗した場合、OpenAI APIで要約
-        if not summary:
+        if self.openai_api_key:
             summary = self.summarize_with_openai(title, content)
+            if summary:
+                return summary
         
-        return summary
+        print("ERROR: すべての要約APIで失敗しました")
+        return None
 

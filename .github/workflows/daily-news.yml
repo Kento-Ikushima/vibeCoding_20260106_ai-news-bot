@@ -9,6 +9,8 @@ on:
 jobs:
   send-news:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 履歴ファイルをコミットするために必要
     
     steps:
     - name: リポジトリをチェックアウト
@@ -33,14 +35,22 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
+        echo "環境変数の確認..."
+        echo "LINE_CHANNEL_ACCESS_TOKEN: ${LINE_CHANNEL_ACCESS_TOKEN:0:10}..." 
+        echo "LINE_USER_ID: ${LINE_USER_ID:0:10}..."
+        echo "GEMINI_API_KEY: ${GEMINI_API_KEY:0:10}..."
         python -m src.main
     
     - name: 履歴ファイルの変更をコミット
-      if: always()
+      if: success()  # 成功時のみ実行
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add data/notified_articles.json
-        git diff --staged --quiet || git commit -m "Update notification history [skip ci]"
-        git push
+        git add data/notified_articles.json || echo "履歴ファイルが見つかりません"
+        if git diff --staged --quiet; then
+          echo "履歴ファイルに変更がありません"
+        else
+          git commit -m "Update notification history [skip ci]"
+          git push
+        fi
 

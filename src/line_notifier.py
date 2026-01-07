@@ -84,11 +84,13 @@ class LineNotifier:
     def send_notification(self, article: Dict, summary: str = None) -> bool:
         """LINE Messaging APIで通知を送信"""
         if not self.channel_access_token:
-            print("LINE_CHANNEL_ACCESS_TOKENが設定されていません")
+            print("ERROR: LINE_CHANNEL_ACCESS_TOKENが設定されていません")
+            print("GitHub SecretsにLINE_CHANNEL_ACCESS_TOKENを設定してください")
             return False
         
         if not self.user_id:
-            print("LINE_USER_IDが設定されていません")
+            print("ERROR: LINE_USER_IDが設定されていません")
+            print("GitHub SecretsにLINE_USER_IDを設定してください")
             return False
         
         try:

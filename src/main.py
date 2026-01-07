@@ -33,7 +33,7 @@ def main():
         
         if not articles:
             print("記事が見つかりませんでした")
-            return
+            sys.exit(0)  # 記事がない場合は正常終了（エラーではない）
         
         # 2. 記事を選択
         print("記事を選択中...")
@@ -41,7 +41,7 @@ def main():
         
         if not selected_article:
             print("通知可能な記事が見つかりませんでした（すべて通知済みの可能性があります）")
-            return
+            sys.exit(0)  # 記事がない場合は正常終了（エラーではない）
         
         print(f"選択された記事: {selected_article['title']}")
         print(f"URL: {selected_article['url']}")

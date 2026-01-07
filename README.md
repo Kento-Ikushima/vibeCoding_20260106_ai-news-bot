@@ -88,7 +88,7 @@ cd ai-news-bot
 2. 「New repository secret」をクリック
 3. 以下のシークレットを追加：
 
-   - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging APIのチャネルアクセストークン（必須・LINE Developers Consoleで発行）
+   - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging APIのチャネルアクセストークン（必須・取得済み）
    - `LINE_CHANNEL_ID`: LINE Messaging APIのチャネルID（必須・`2008843686`）
    - `LINE_CHANNEL_SECRET`: LINE Messaging APIのチャネルシークレット（必須・`5ba594d83126ce8c3b966f64b22eb477`）
    - `LINE_USER_ID`: 通知を送信するユーザーID（必須・`Ub8ba7bebd1111d25cb340badafbcb4e8`）

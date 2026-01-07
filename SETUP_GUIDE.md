@@ -82,6 +82,7 @@ GitHub Secretsに、取得した各種トークンやキーを設定します。
 #### ① LINE_CHANNEL_ACCESS_TOKEN
 - **Name**: `LINE_CHANNEL_ACCESS_TOKEN`
 - **Secret**: ステップ1-1で取得したチャネルアクセストークン
+  - **取得済みの場合の値**: `HtHPbSSrL5JR08BEgw7OQo+iUTtdRFi/LwYIVAEPYofvkh8r4EX7vFULOKyQg9vSOpOZdXmOQDWGdz1ZxZs0Ouhu6ZkyKqHLOy5HgrThBB7KT7/H9RgCfGYFlNkVVB3CTmbF3/Dg1gP9Mmpc50LKgQdB04t89/1O/w1cDnyilFU=`
 - 「**Add secret**」をクリック
 
 #### ② LINE_CHANNEL_ID
@@ -123,10 +124,13 @@ GitHub Secretsに、取得した各種トークンやキーを設定します。
 - ✅ OPENAI_API_KEY（オプション）
 
 **現在の設定状況**:
-- Channel IDとChannel Secret: ✅ 設定済み
-- ユーザーID: ✅ 取得済み (`Ub8ba7bebd1111d25cb340badafbcb4e8`)
-- Gemini APIキー: ✅ 取得済み (`AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`)
-- 残り必要なもの: **LINE_CHANNEL_ACCESS_TOKEN**のみ（LINE Developers Consoleで発行が必要）
+- ✅ **すべての情報が取得済みです！**
+- Channel ID: ✅ `2008843686`
+- Channel Secret: ✅ `5ba594d83126ce8c3b966f64b22eb477`
+- ユーザーID: ✅ `Ub8ba7bebd1111d25cb340badafbcb4e8`
+- Gemini APIキー: ✅ `AIzaSyDfQ2bK47WjW4Uk-B3YkcgyslQd8DB58NY`
+- チャネルアクセストークン: ✅ `HtHPbSSrL5JR08BEgw7OQo+iUTtdRFi/LwYIVAEPYofvkh8r4EX7vFULOKyQg9vSOpOZdXmOQDWGdz1ZxZs0Ouhu6ZkyKqHLOy5HgrThBB7KT7/H9RgCfGYFlNkVVB3CTmbF3/Dg1gP9Mmpc50LKgQdB04t89/1O/w1cDnyilFU=`
+- ⚠️ **次のステップ**: GitHub Secretsに上記の情報をすべて設定してください
 
 ---
 

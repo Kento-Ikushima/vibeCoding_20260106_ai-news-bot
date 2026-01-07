@@ -12,6 +12,8 @@ class LineNotifier:
     
     def __init__(self):
         self.channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+        self.channel_id = os.getenv("LINE_CHANNEL_ID", "2008843686")  # デフォルト値
+        self.channel_secret = os.getenv("LINE_CHANNEL_SECRET", "5ba594d83126ce8c3b966f64b22eb477")  # デフォルト値
         self.user_id = os.getenv("LINE_USER_ID")
         self.api_url = "https://api.line.me/v2/bot/message/push"
     

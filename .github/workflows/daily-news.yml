@@ -27,6 +27,8 @@ jobs:
     - name: 記事収集・通知実行
       env:
         LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        LINE_CHANNEL_ID: ${{ secrets.LINE_CHANNEL_ID }}
+        LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
         LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

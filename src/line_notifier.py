@@ -1,5 +1,5 @@
 """
-LINE Notify通知モジュール
+LINE Messaging API通知モジュール
 """
 import os
 import requests
@@ -8,11 +8,12 @@ from datetime import datetime
 
 
 class LineNotifier:
-    """LINE Notifyで通知を送信するクラス"""
+    """LINE Messaging APIで通知を送信するクラス"""
     
     def __init__(self):
-        self.token = os.getenv("LINE_NOTIFY_TOKEN")
-        self.api_url = "https://notify-api.line.me/api/notify"
+        self.channel_access_token = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
+        self.user_id = os.getenv("LINE_USER_ID")
+        self.api_url = "https://api.line.me/v2/bot/message/push"
     
     def format_message(self, article: Dict, summary: str = None) -> str:
         """通知メッセージをフォーマット"""
@@ -79,27 +80,49 @@ class LineNotifier:
         return message
     
     def send_notification(self, article: Dict, summary: str = None) -> bool:
-        """LINE通知を送信"""
-        if not self.token:
-            print("LINE_NOTIFY_TOKENが設定されていません")
+        """LINE Messaging APIで通知を送信"""
+        if not self.channel_access_token:
+            print("LINE_CHANNEL_ACCESS_TOKENが設定されていません")
+            return False
+        
+        if not self.user_id:
+            print("LINE_USER_IDが設定されていません")
             return False
         
         try:
-            message = self.format_message(article, summary)
+            message_text = self.format_message(article, summary)
+            
+            # LINE Messaging APIのメッセージ形式
+            # 長いメッセージは分割する（最大5000文字）
+            messages = []
+            if len(message_text) <= 5000:
+                messages.append({
+                    "type": "text",
+                    "text": message_text
+                })
+            else:
+                # 5000文字を超える場合は分割
+                chunks = [message_text[i:i+5000] for i in range(0, len(message_text), 5000)]
+                for chunk in chunks:
+                    messages.append({
+                        "type": "text",
+                        "text": chunk
+                    })
             
             headers = {
-                "Authorization": f"Bearer {self.token}",
-                "Content-Type": "application/x-www-form-urlencoded"
+                "Authorization": f"Bearer {self.channel_access_token}",
+                "Content-Type": "application/json"
             }
             
-            data = {
-                "message": message
+            payload = {
+                "to": self.user_id,
+                "messages": messages
             }
             
             response = requests.post(
                 self.api_url,
                 headers=headers,
-                data=data,
+                json=payload,
                 timeout=10
             )
             
@@ -109,5 +132,7 @@ class LineNotifier:
             
         except Exception as e:
             print(f"LINE通知送信エラー: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"エラー詳細: {e.response.text}")
             return False
 

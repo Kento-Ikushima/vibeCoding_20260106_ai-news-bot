@@ -73,7 +73,7 @@
 ### 2.2 LINE通知機能
 
 #### 2.2.1 通知先
-- 個人のLINEアカウント（LINE Notifyを使用）
+- 個人のLINEアカウント（LINE Messaging APIを使用）
 
 #### 2.2.2 通知形式
 **リッチテキスト形式（確定）**
@@ -310,7 +310,7 @@ https://example.com/article
 ### 10.1 承認が必要な事項
 - [x] 対象サイトの選定（追加・削除）→ **確定済み**
 - [x] 通知形式の最終決定（テキスト/画像）→ **テキスト形式で確定**
-- [x] LINE Notify vs Messaging APIの選択→ **LINE Notifyで確定**
+- [x] LINE Notify vs Messaging APIの選択→ **LINE Messaging APIで確定**
 - [x] 要約生成方法の選択（API使用/ローカル処理）→ **Gemini Pro API（優先）、OpenAI API（フォールバック）で確定**
 
 ### 10.2 確認事項

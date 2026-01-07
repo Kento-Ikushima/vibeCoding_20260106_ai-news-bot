@@ -30,12 +30,39 @@ cd ai-news-bot
 
 ### 2. 必要なAPIキー・トークンの取得
 
-#### LINE Notify トークンの取得
-1. [LINE Notify](https://notify-bot.line.me/)にアクセス
-2. ログイン後、「マイページ」→「トークンを発行する」
-3. トークン名を入力（例: "AI技術ニュースBot"）
-4. 通知を送信するトークルームを選択（1-on-1でLINE Notifyから通知を受け取る）
-5. 発行されたトークンをコピー
+#### LINE Messaging API の設定
+1. [LINE Developers](https://developers.line.biz/ja/)にアクセスしてログイン
+2. 「プロバイダー」を作成（まだ作成していない場合）
+3. 「チャネルを作成」→「Messaging API」を選択
+4. チャネル情報を入力して作成
+5. **チャネルアクセストークン**を発行：
+   - チャネル設定ページの「Messaging API設定」タブを開く
+   - 「チャネルアクセストークン（長期）」セクションで「発行」をクリック
+   - 発行されたトークンをコピー（**`LINE_CHANNEL_ACCESS_TOKEN`**として使用）
+6. **ユーザーIDを取得**：
+   
+   以下の方法でユーザーIDを取得できます：
+   
+   **方法1: Webhookイベントログから取得（推奨）**
+   - お使いのLINEアカウントで、作成した公式アカウントを友だち追加
+   - [LINE Developers Console](https://developers.line.biz/console/)で、チャネルの「Messaging API設定」→「Webhookの利用」で「Webhook URL」を一時的に設定（例: `https://example.com/webhook`）
+   - Webhook URLの「応答確認」をクリックして成功することを確認（この時点では実際のイベントは保存されません）
+   - 公式アカウントに任意のメッセージを送信（「こんにちは」など）
+   - [LINE Developers Console](https://developers.line.biz/console/)の「Messaging API」→「Webhook」タブで「イベント」を確認
+   - イベントのJSONの中から`source.userId`の値をコピー（**`LINE_USER_ID`**として使用）
+   
+   **方法2: プロフィール取得APIを使用（一時的なWebhookサーバーが必要）**
+   - 簡易的なWebhookサーバーをローカルで起動（ngrok等を使用して公開）
+   - 公式アカウントにメッセージを送信してユーザーIDをログ出力
+   
+   **方法3: 公式アカウントからメッセージを送信**
+   - LINE Developers Consoleの「Messaging API」→「Webhook」→「Webhook URL」を設定
+   - 公式アカウントからあなた自身にメッセージを送信
+   - Webhookイベントから`source.userId`を取得
+
+**注意**: 
+- ユーザーIDは、公式アカウントにメッセージを送信するか、公式アカウントからメッセージを受信する必要があります
+- ユーザーIDは`U`で始まる文字列です（例: `U1234567890abcdef1234567890abcdef`）
 
 #### Gemini Pro APIキーの取得
 1. [Google AI Studio](https://makersuite.google.com/app/apikey)にアクセス
@@ -55,7 +82,8 @@ cd ai-news-bot
 2. 「New repository secret」をクリック
 3. 以下のシークレットを追加：
 
-   - `LINE_NOTIFY_TOKEN`: LINE Notifyトークン（必須）
+   - `LINE_CHANNEL_ACCESS_TOKEN`: LINE Messaging APIのチャネルアクセストークン（必須）
+   - `LINE_USER_ID`: 通知を送信するユーザーID（必須）
    - `GEMINI_API_KEY`: Gemini Pro APIキー（必須）
    - `OPENAI_API_KEY`: OpenAI APIキー（オプション、フォールバック用）
 
@@ -84,7 +112,8 @@ GitHub Actionsが毎朝8時（JST）に自動的に実行されます。
 
 ```bash
 # 環境変数を設定（Windows PowerShell）
-$env:LINE_NOTIFY_TOKEN="your_token"
+$env:LINE_CHANNEL_ACCESS_TOKEN="your_channel_access_token"
+$env:LINE_USER_ID="your_user_id"
 $env:GEMINI_API_KEY="your_api_key"
 $env:OPENAI_API_KEY="your_openai_key"  # オプション
 
@@ -144,6 +173,7 @@ https://example.com/article
 - **Python 3.11+**
 - **BeautifulSoup4**: ウェブスクレイピング
 - **requests**: HTTPリクエスト
+- **LINE Messaging API**: 通知送信
 - **Google Gemini Pro API**: 記事要約
 - **OpenAI API**: 要約のフォールバック
 - **GitHub Actions**: スケジュール実行
@@ -166,7 +196,9 @@ https://example.com/article
 - APIのレート制限に達していないか確認してください
 
 ### LINE通知が送信されない
-- LINE Notifyトークンが正しく設定されているか確認してください
+- LINEチャネルアクセストークンとユーザーIDが正しく設定されているか確認してください
+- 公式アカウントが友だち追加されているか確認してください
+- ユーザーIDが正しいか確認してください（Webhookイベントから取得）
 - GitHub Actionsのログでエラー内容を確認してください
 
 ## ライセンス
